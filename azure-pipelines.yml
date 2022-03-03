@@ -17,6 +17,7 @@ steps:
     scriptType: 'pscore'
     scriptLocation: 'inlineScript'
     inlineScript: |
+      az aks install-cli
       az aks get-credentials -n aksnolocal -g aksnolocal_rg
       kubelogin convert-kubeconfig -l azurecli
       kubectl get no
