@@ -10,13 +10,24 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: Kubernetes@1
+
+- task: AzureCLI@2
   inputs:
-    connectionType: 'Azure Resource Manager'
-    azureSubscriptionEndpoint: 'cadull-internal-consumption'
-    azureResourceGroup: 'aksnolocal_rg'
-    kubernetesCluster: 'aksnolocal'
-    command: 'get'
-    arguments: 'no'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
+    azureSubscription: 'cadull-internal-consumption'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az aks get-credentials -n aksnolocal -g aksnolocal_rg
+      kubelogin convert-kubeconfig -l azurecli
+      kubectl get no
+
+# - task: Kubernetes@1
+#   inputs:
+#     connectionType: 'Azure Resource Manager'
+#     azureSubscriptionEndpoint: 'cadull-internal-consumption'
+#     azureResourceGroup: 'aksnolocal_rg'
+#     kubernetesCluster: 'aksnolocal'
+#     command: 'get'
+#     arguments: 'no'
+#     secretType: 'dockerRegistry'
+#     containerRegistryType: 'Azure Container Registry'
