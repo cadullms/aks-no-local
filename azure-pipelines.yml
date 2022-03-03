@@ -10,10 +10,13 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'cadull-internal-consumption'
+    azureResourceGroup: 'aksnolocal_rg'
+    kubernetesCluster: 'aksnolocal'
+    command: 'get'
+    arguments: 'no'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
